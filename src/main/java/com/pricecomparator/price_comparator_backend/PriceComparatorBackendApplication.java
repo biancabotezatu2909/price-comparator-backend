@@ -18,12 +18,13 @@ public class PriceComparatorBackendApplication {
 	}
 
 	@Bean
-	CommandLineRunner loadCsv(ProductService productService, CsvProductImporter csvProductImporter) {
+	CommandLineRunner loadCsv(ProductService productService, CsvProductImporter importer) {
 		return args -> {
-			List<Product> products = csvProductImporter.importFromClasspathFolder("data");
+			List<Product> allProducts = importer.importFromClasspathFolder("data");
 			productService.deleteAll();
-			productService.saveAll(products);
-			System.out.println("Imported: " + products.size() + " products from csv");
+			productService.saveAll(allProducts);
+			System.out.println("Imported " + allProducts.size() + " products.");
 		};
 	}
+
 }

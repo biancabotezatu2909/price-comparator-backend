@@ -38,34 +38,42 @@ public class CsvProductImporter {
                     log.info("Parsing file: {}", filename);
                     int lineNumber = 1;
                     String line;
+
                     while ((line = reader.readLine()) != null) {
                         lineNumber++;
-                        String[] fields = line.split(";");
-                       // log.info("Line {} from {}: {}", lineNumber, filename, Arrays.toString(fields));
 
-                        if (fields.length < 8) {
-                          //  log.warn("Skipped line {} in {}: invalid field count ({})", lineNumber, filename, fields.length);
-                            continue;
+                        String[] fields = line.trim().split(";");
+                        for (int i = 0; i < fields.length; i++) {
+                            fields[i] = fields[i].trim();
                         }
 
+                        if (fields.length < 8) continue;
                         if (fields[0].equalsIgnoreCase("product_id")) {
                             log.info("Skipped header row at line {} in {}", lineNumber, filename);
                             continue;
                         }
-                        Product product = Product.builder()
-                                .productId(fields[0])
-                                .productName(fields[1])
-                                .productCategory(fields[2])
-                                .brand(fields[3])
-                                .packageQuantity(Double.parseDouble(fields[4]))
-                                .packageUnit(fields[5])
-                                .price(Double.parseDouble(fields[6]))
-                                .currency(fields[7])
-                                .store(store)
-                                .date(date)
-                                .build();
 
-                        allProducts.add(product);
+                        try {
+                            Product product = Product.builder()
+                                    .productId(fields[0])
+                                    .productName(fields[1])
+                                    .productCategory(fields[2])
+                                    .brand(fields[3])
+                                    .packageQuantity(Double.parseDouble(fields[4]))
+                                    .packageUnit(fields[5])
+                                    .price(Double.parseDouble(fields[6]))
+                                    .currency(fields[7])
+                                    .store(store)
+                                    .date(date)
+                                    .build();
+
+                            allProducts.add(product);
+
+                        } catch (NumberFormatException e) {
+                            log.warn("Skipped invalid number at line {} in {}: {}", lineNumber, filename, Arrays.toString(fields));
+                        } catch (Exception e) {
+                            log.error("Unexpected error at line {} in {}: {}", lineNumber, filename, Arrays.toString(fields), e);
+                        }
                     }
 
                 } catch (Exception e) {
@@ -77,6 +85,7 @@ public class CsvProductImporter {
             log.error("Failed to read resources from {}", folderPath, e);
         }
 
+        log.info("Imported {} total products from folder '{}'", allProducts.size(), folderPath);
         return allProducts;
     }
 }
