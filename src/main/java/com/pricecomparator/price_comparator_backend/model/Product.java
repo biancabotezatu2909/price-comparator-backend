@@ -2,6 +2,8 @@ package com.pricecomparator.price_comparator_backend.model;
 
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.*;
 
@@ -14,6 +16,9 @@ import lombok.*;
 public class Product {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // technical primary key
+    private Long id;
+
     private String productId;
     private String productName;
     private String productCategory;
@@ -23,6 +28,6 @@ public class Product {
     private double price;
     private String currency;
 
-    private String store; // from filename
-    private String date; // from filename
+    private String store;
+    private String date;
 }
