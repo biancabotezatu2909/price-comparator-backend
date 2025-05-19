@@ -20,4 +20,10 @@ public class ProductService {
     public void saveAll(List<Product> products){
         productRepository.saveAll(products);
     }
+
+    public void deleteAll() {
+        productRepository.deleteAll();
+    }
+
+
 }
