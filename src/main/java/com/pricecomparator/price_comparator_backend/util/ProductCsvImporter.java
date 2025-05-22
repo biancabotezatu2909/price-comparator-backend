@@ -13,7 +13,7 @@ import java.util.*;
 
 @Component
 @Slf4j
-public class CsvProductImporter {
+public class ProductCsvImporter {
 
     public List<Product> importFromClasspathFolder(String folderPath) {
         List<Product> allProducts = new ArrayList<>();
