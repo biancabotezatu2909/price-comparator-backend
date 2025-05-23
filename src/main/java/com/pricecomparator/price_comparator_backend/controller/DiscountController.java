@@ -33,13 +33,13 @@ public class DiscountController {
     public List<DiscountDto> getBest(
             @RequestParam(required = false) String store,
             @RequestParam(required = false) String category,
-            @RequestParam(required = false) Boolean activeOnly,
             @RequestParam(required = false) String productName
     ) {
-        return discountService.getTopFilteredByPercentage(store, category, activeOnly, productName)
+        return discountService.getBestDiscounts(store, category, productName)
                 .stream()
                 .map(DiscountMapper::toDto)
-                .toList();    }
+                .toList();
+    }
 
 
     @GetMapping("/new")
