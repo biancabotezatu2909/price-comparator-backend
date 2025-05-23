@@ -69,7 +69,7 @@ public class DiscountCsvImporter {
                                     .toDate(LocalDate.parse(fields[7]))
                                     .percentage(Double.parseDouble(fields[8]))
                                     .store(store)
-                                    .date(fileDate)
+                                    .date(LocalDate.parse(fileDate))
                                     .build();
 
                             allDiscounts.add(discount);

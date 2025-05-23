@@ -1,5 +1,7 @@
 package com.pricecomparator.price_comparator_backend.controller;
 
+import com.pricecomparator.price_comparator_backend.dto.DiscountDto;
+import com.pricecomparator.price_comparator_backend.mapper.DiscountMapper;
 import com.pricecomparator.price_comparator_backend.model.Discount;
 import com.pricecomparator.price_comparator_backend.service.DiscountService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,29 +22,40 @@ public class DiscountController {
     private DiscountService discountService;
 
     @GetMapping
-    public List<Discount> getAll(){
-        return discountService.getAll();
+    public List<DiscountDto> getAll(){
+        return discountService.getAll()
+                .stream()
+                .map(DiscountMapper::toDto)
+                .toList();
     }
 
     @GetMapping("/best")
-    public List<Discount> getBest(
+    public List<DiscountDto> getBest(
             @RequestParam(required = false) String store,
             @RequestParam(required = false) String category,
             @RequestParam(required = false) Boolean activeOnly,
             @RequestParam(required = false) String productName
     ) {
-        return discountService.getTopFilteredByPercentage(store, category, activeOnly, productName);
-    }
+        return discountService.getTopFilteredByPercentage(store, category, activeOnly, productName)
+                .stream()
+                .map(DiscountMapper::toDto)
+                .toList();    }
 
 
     @GetMapping("/new")
-    public List<Discount> getNew(@RequestParam("since") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDate since){
-        return discountService.getNewDiscounts(since);
+    public List<DiscountDto> getNew(@RequestParam("since") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDate since){
+        return discountService.getNewDiscounts(since)
+                .stream()
+                .map(DiscountMapper::toDto)
+                .toList();
     }
 
     @GetMapping("/store")
-    public List<Discount> getByStore(@RequestParam String store){
-        return discountService.getByStore(store);
+    public List<DiscountDto> getByStore(@RequestParam String store){
+        return discountService.getByStore(store)
+                .stream()
+                .map(DiscountMapper::toDto)
+                .toList();
     }
 
 }
