@@ -7,6 +7,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.*;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Entity
@@ -27,7 +28,7 @@ public class Product {
     private String brand;
     private double packageQuantity;
     private String packageUnit;
-    private double price;
+    private BigDecimal price;
     private String currency;
 
     private String store;

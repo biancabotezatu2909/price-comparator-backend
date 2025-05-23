@@ -1,5 +1,6 @@
 package com.pricecomparator.price_comparator_backend.controller;
 
+import com.pricecomparator.price_comparator_backend.dto.PricePointDto;
 import com.pricecomparator.price_comparator_backend.dto.ProductDto;
 import com.pricecomparator.price_comparator_backend.mapper.ProductMapper;
 import com.pricecomparator.price_comparator_backend.model.Product;
@@ -7,6 +8,7 @@ import com.pricecomparator.price_comparator_backend.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -39,4 +41,21 @@ public class ProductController {
         }
         return products.stream().map(ProductMapper::toDto).toList();
     }
+
+    @GetMapping("/products/{productId}/price-history")
+    public List<PricePointDto> getPriceHistory(
+            @PathVariable String productId,
+            @RequestParam(required = false) String store,
+            @RequestParam(required = false) String brand,
+            @RequestParam(required = false) String category,
+            @RequestParam(required = false)
+            @org.springframework.format.annotation.DateTimeFormat(iso = org.springframework.format.annotation.DateTimeFormat.ISO.DATE)
+            LocalDate from,
+            @RequestParam(required = false)
+            @org.springframework.format.annotation.DateTimeFormat(iso = org.springframework.format.annotation.DateTimeFormat.ISO.DATE)
+            LocalDate to
+    ) {
+        return productService.getPriceHistory(productId, store, brand, category, from, to);
+    }
+
 }

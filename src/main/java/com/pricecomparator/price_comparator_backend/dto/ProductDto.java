@@ -2,6 +2,7 @@ package com.pricecomparator.price_comparator_backend.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 public record ProductDto(
@@ -24,7 +25,7 @@ public record ProductDto(
         String packageUnit,
 
         @Schema(description = "Product price", example = "9.90")
-        double price,
+        BigDecimal price,
 
         @Schema(description = "Currency", example = "RON")
         String currency,

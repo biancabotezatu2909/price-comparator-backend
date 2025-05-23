@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.util.*;
@@ -62,7 +63,7 @@ public class ProductCsvImporter {
                                     .brand(fields[3])
                                     .packageQuantity(Double.parseDouble(fields[4]))
                                     .packageUnit(fields[5])
-                                    .price(Double.parseDouble(fields[6]))
+                                    .price(BigDecimal.valueOf(Double.parseDouble(fields[6])))
                                     .currency(fields[7])
                                     .store(store)
                                     .date(LocalDate.parse(date))
