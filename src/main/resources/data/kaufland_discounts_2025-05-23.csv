@@ -1,0 +1,11 @@
+product_id;product_name;brand;package_quantity;package_unit;product_category;from_date;to_date;percentage_of_discount
+P301;iaurt grecesc;Olympus;0.4;kg;lactate;2025-05-18;2025-06-01;15
+P302;brânză telemea;Hochland;0.3;kg;lactate;2025-05-15;2025-05-30;10
+P303;piept de pui;Agricola;1;kg;carne;2025-05-19;2025-05-31;12
+P304;spaghetti nr.5;Barilla;500;g;paste făinoase;2025-05-17;2025-06-02;18
+P305;cafea măcinată;Jacobs;250;g;cafea;2025-05-20;2025-05-30;10
+P306;hârtie igienică 3 straturi;Pufina;10;role;produse de menaj;2025-05-15;2025-05-31;16
+P307;roșii cherry;K-Bio;250;g;legume și fructe;2025-05-22;2025-06-02;9
+P308;ulei de măsline extra virgin;K-Classic;0.75;l;alimente de bază;2025-05-21;2025-06-03;11
+P309;smântână 20%;Delaco;0.4;kg;lactate;2025-05-15;2025-05-30;13
+P310;vin roșu sec;Recas;0.75;l;băuturi;2025-05-23;2025-06-01;8

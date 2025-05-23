@@ -8,6 +8,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -26,12 +27,22 @@ public class DiscountService {
         return discountRepository.findByStore(store);
     }
 
-    public List<Discount> getNewDiscounts(LocalDate sinceDate){
-        return discountRepository.findByFromDateAfter(sinceDate);
+    public List<Discount> getNewDiscounts(int daysBack, String category, String productName, String store) {
+        LocalDate today = LocalDate.now();
+        LocalDate threshold = today.minusDays(daysBack);
+
+        return discountRepository.findAll().stream()
+                .filter(d -> !d.getFromDate().isBefore(threshold))
+                .filter(d -> !d.getToDate().isBefore(today))
+                .filter(d -> category == null || d.getProductCategory().equalsIgnoreCase(category))
+                .filter(d -> productName == null || normalize(d.getProductName()).contains(normalize(productName)))
+                .filter(d -> store == null || d.getStore().equalsIgnoreCase(store))
+                .toList();
     }
+    
 
     public List<Discount> getActiveDiscounts(LocalDate onDate){
-        return discountRepository.findByToDateGreaterThanEqual(onDate);
+        return discountRepository.findByFromDateGreaterThanEqual(onDate);
     }
 
     public List<Discount> getTopByPercentage(int limit){
@@ -73,6 +84,15 @@ public class DiscountService {
                 .values().stream()
                 .sorted(Comparator.comparingDouble(Discount::getPercentage).reversed())
                 .toList();
+    }
+
+    public boolean exists(Discount d) {
+        return discountRepository.existsByProductIdAndStoreAndFromDateAndToDate(
+                d.getProductId(),
+                d.getStore(),
+                d.getFromDate(),
+                d.getToDate()
+        );
     }
 
 

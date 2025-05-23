@@ -43,12 +43,18 @@ public class DiscountController {
 
 
     @GetMapping("/new")
-    public List<DiscountDto> getNew(@RequestParam("since") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDate since){
-        return discountService.getNewDiscounts(since)
+    public List<DiscountDto> getNewDiscounts(
+            @RequestParam(defaultValue = "1") int days,
+            @RequestParam(required = false) String category,
+            @RequestParam(required = false) String productName,
+            @RequestParam(required = false) String store
+    ) {
+        return discountService.getNewDiscounts(days, category, productName, store)
                 .stream()
                 .map(DiscountMapper::toDto)
                 .toList();
     }
+
 
     @GetMapping("/store")
     public List<DiscountDto> getByStore(@RequestParam String store){

@@ -43,4 +43,13 @@ public class ProductService {
     public void deleteAll(){
         productRepository.deleteAll();
     }
+
+    public boolean exists(Product p) {
+        return productRepository.existsByProductIdAndStoreAndDate(
+                p.getProductId(),
+                p.getStore(),
+                p.getDate()
+        );
+    }
+
 }

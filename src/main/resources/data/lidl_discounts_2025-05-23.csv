@@ -1,0 +1,11 @@
+product_id;product_name;brand;package_quantity;package_unit;product_category;from_date;to_date;percentage_of_discount
+P201;lapte integral;Pilos;1;l;lactate;2025-05-15;2025-05-30;10
+P202;cafea boabe;Bellarom;1;kg;cafea;2025-05-18;2025-05-28;20
+P203;paste penne;Combino;500;g;paste făinoase;2025-05-16;2025-06-01;12
+P204;detergent capsule;Formil;30;buc;produse de menaj;2025-05-20;2025-05-29;25
+P205;pâine graham;Lidl;400;g;panificație;2025-05-17;2025-05-30;8
+P206;iaurt natural;Pilos;150;g;lactate;2025-05-21;2025-05-31;18
+P207;apă plată;Saguaro;2;l;băuturi;2025-05-15;2025-06-02;6
+P208;zahăr tos;Belbake;1;kg;alimente de bază;2025-05-19;2025-06-01;7
+P209;hârtie igienică 4 straturi;Floralys;8;role;produse de menaj;2025-05-15;2025-05-31;14
+P210;ulei floarea-soarelui;Vita D'Or;1;l;alimente de bază;2025-05-20;2025-05-30;10
