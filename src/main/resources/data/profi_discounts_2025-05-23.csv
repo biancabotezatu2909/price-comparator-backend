@@ -1,0 +1,11 @@
+product_id;product_name;brand;package_quantity;package_unit;product_category;from_date;to_date;percentage_of_discount
+P401;lapte bio;Napolact;1;l;lactate;2025-05-15;2025-06-01;9
+P402;ouă mărimea L;Avicola;10;buc;ouă;2025-05-17;2025-06-02;7
+P403;apă minerală;Borsec;2;l;băuturi;2025-05-20;2025-06-03;5
+P404;iaurt de băut;Activia;330;ml;lactate;2025-05-16;2025-05-30;12
+P405;orez bob lung;Deroni;1;kg;alimente de bază;2025-05-18;2025-06-01;11
+P406;șampon revitalizant;Schauma;400;ml;îngrijire personală;2025-05-21;2025-06-02;14
+P407;ciocolată cu alune;Milka;100;g;gustări;2025-05-22;2025-05-31;10
+P408;detergent pudră;Dero;2;kg;produse de menaj;2025-05-15;2025-06-01;19
+P409;zahar brun;Proxi;1;kg;alimente de bază;2025-05-19;2025-05-30;6
+P410;unt 82%;Napolact;200;g;lactate;2025-05-20;2025-06-02;13

@@ -10,7 +10,15 @@ import java.util.List;
 @Repository
 public interface DiscountRepository extends JpaRepository<Discount, Long> {
     List<Discount> findByStore(String store);
-    List<Discount> findByToDateGreaterThanEqual(LocalDate date);
+    List<Discount> findByFromDateGreaterThanEqual(LocalDate date);
     List<Discount> findByFromDateAfter(LocalDate date);
+    List<Discount> findByFromDateGreaterThanEqualAndToDateGreaterThanEqual(LocalDate from, LocalDate to);
     List<Discount> findTop10ByOrderByPercentageDesc();
+    boolean existsByProductIdAndStoreAndFromDateAndToDate(
+            String productId,
+            String store,
+            LocalDate from,
+            LocalDate to
+    );
+
 }
