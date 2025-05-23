@@ -7,6 +7,8 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.*;
 
+import java.time.LocalDate;
+
 @Entity
 @Getter
 @Setter
@@ -29,5 +31,6 @@ public class Product {
     private String currency;
 
     private String store;
-    private String date;
+    private LocalDate date;
+
 }
