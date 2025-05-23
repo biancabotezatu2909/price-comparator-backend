@@ -58,33 +58,29 @@ public class DiscountService {
         discountRepository.deleteAll();
     }
 
-    public List<Discount> getTopFilteredByPercentage(String store, String category, Boolean activeOnly, String productName) {
+    public List<Discount> getBestDiscounts(String store, String category, String productName) {
         LocalDate today = LocalDate.now();
 
         return discountRepository.findAll().stream()
+                // Filter: only active
+                .filter(d -> !d.getFromDate().isAfter(today) && !d.getToDate().isBefore(today))
 
-                // 1. Filter by optional store/category/activeOnly
+                // Optional filters
                 .filter(d -> store == null || d.getStore().equalsIgnoreCase(store))
                 .filter(d -> category == null || d.getProductCategory().equalsIgnoreCase(category))
-                .filter(d -> {
-                    if (activeOnly == null) return true;
-                    boolean isActive = !d.getFromDate().isAfter(today) && !d.getToDate().isBefore(today);
-                    return activeOnly.equals(isActive);
-                })
-
                 .filter(d -> productName == null || normalize(d.getProductName()).contains(normalize(productName)))
 
-                // 3. Group by normalized productName and select best discount per group
+                // Group by normalized productName, pick highest percentage
                 .collect(Collectors.toMap(
                         d -> normalize(d.getProductName()),
                         d -> d,
                         (d1, d2) -> d1.getPercentage() >= d2.getPercentage() ? d1 : d2
                 ))
-
                 .values().stream()
                 .sorted(Comparator.comparingDouble(Discount::getPercentage).reversed())
                 .toList();
     }
+
 
     public boolean exists(Discount d) {
         return discountRepository.existsByProductIdAndStoreAndFromDateAndToDate(
