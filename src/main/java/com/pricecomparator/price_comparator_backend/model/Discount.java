@@ -32,5 +32,5 @@ public class Discount {
     private double percentage;
 
     private String store;
-    private String date;
+    private LocalDate date;
 }
