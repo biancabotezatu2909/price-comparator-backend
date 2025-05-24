@@ -19,7 +19,7 @@ import java.util.*;
 public class DiscountCsvImporter {
 
     public List<Discount> importFromClasspathFolder(String folderPath) {
-        List<Discount> allDiscounts = new ArrayList<>();
+        Map<String, Discount> latestDiscountMap = new HashMap<>();
         PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
 
         try {
@@ -42,13 +42,14 @@ public class DiscountCsvImporter {
 
                     while ((line = reader.readLine()) != null) {
                         lineNumber++;
+
                         if (!headerSkipped) {
                             headerSkipped = true;
                             if (!line.toLowerCase().startsWith("product_id")) {
                                 log.warn("Expected header at line 1 in {}, skipping file", filename);
                                 break;
                             }
-                            continue; // skip header
+                            continue;
                         }
 
                         String[] fields = line.trim().split(";");
@@ -72,7 +73,12 @@ public class DiscountCsvImporter {
                                     .date(LocalDate.parse(fileDate))
                                     .build();
 
-                            allDiscounts.add(discount);
+                            String key = discount.getProductId() + "|" + discount.getStore() + "|" + discount.getFromDate() + "|" + discount.getToDate();
+                            Discount existing = latestDiscountMap.get(key);
+
+                            if (existing == null || discount.getDate().isAfter(existing.getDate())) {
+                                latestDiscountMap.put(key, discount);
+                            }
 
                         } catch (Exception e) {
                             log.warn("Failed to parse discount at line {} in {}: {}", lineNumber, filename, Arrays.toString(fields), e);
@@ -88,8 +94,9 @@ public class DiscountCsvImporter {
             log.error("Failed to load resources from '{}'", folderPath, e);
         }
 
-        log.info("✅ Successfully imported {} discounts from '{}'", allDiscounts.size(), folderPath);
-        return allDiscounts;
+        List<Discount> deduplicated = new ArrayList<>(latestDiscountMap.values());
+        log.info("Returning {} most recent discounts from folder '{}'", deduplicated.size(), folderPath);
+        return deduplicated;
     }
 
     private String extractStoreFromFilename(String filename) {
