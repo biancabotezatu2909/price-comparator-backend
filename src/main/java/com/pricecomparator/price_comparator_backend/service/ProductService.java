@@ -1,17 +1,20 @@
 package com.pricecomparator.price_comparator_backend.service;
 
+import com.pricecomparator.price_comparator_backend.dto.BestDiscountedProductDto;
 import com.pricecomparator.price_comparator_backend.dto.PricePointDto;
 import com.pricecomparator.price_comparator_backend.dto.ValuePerUnitDto;
 import com.pricecomparator.price_comparator_backend.model.Product;
 import com.pricecomparator.price_comparator_backend.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import com.pricecomparator.price_comparator_backend.model.Discount;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static java.text.Normalizer.normalize;
 
@@ -137,7 +140,7 @@ public class ProductService {
                             p.getBrand(),
                             p.getStore(),
                             p.getProductCategory(),
-                            discountedPrice, // ✅ show discounted price
+                            discountedPrice,
                             p.getPackageQuantity(),
                             p.getPackageUnit(),
                             pricePerUnit,
@@ -149,6 +152,48 @@ public class ProductService {
                 .toList();
     }
 
+    public List<BestDiscountedProductDto> getBestDiscountedProducts(
+            String store,
+            String category,
+            String brand,
+            String productName
+    ) {
+        return productRepository.findAll().stream()
+                .filter(p -> store == null || p.getStore().equalsIgnoreCase(store))
+                .filter(p -> category == null || p.getProductCategory().equalsIgnoreCase(category))
+                .filter(p -> brand == null || p.getBrand().equalsIgnoreCase(brand))
+                .filter(p -> productName == null || normalize(p.getProductName()).contains(normalize(productName)))
+                .filter(p -> discountApplierService.findBestApplicableDiscount(p).isPresent()) // ✅ Only discounted
+                .collect(Collectors.toMap(
+                        p -> normalize(p.getProductName()),
+                        p -> p,
+                        (p1, p2) -> {
+                            BigDecimal price1 = discountApplierService.getDiscountedPrice(p1);
+                            BigDecimal price2 = discountApplierService.getDiscountedPrice(p2);
+                            return price1.compareTo(price2) <= 0 ? p1 : p2;
+                        }
+                ))
+                .values().stream()
+                .map(p -> {
+                    BigDecimal discounted = discountApplierService.getDiscountedPrice(p);
+                    double discountPercentage = discountApplierService
+                            .findBestApplicableDiscount(p)
+                            .map(Discount::getPercentage)
+                            .orElse(0.0);
 
+                    return new BestDiscountedProductDto(
+                            p.getProductId(),
+                            p.getProductName(),
+                            p.getBrand(),
+                            p.getStore(),
+                            p.getProductCategory(),
+                            p.getPrice(),
+                            discountPercentage,
+                            discounted
+                    );
+                })
+                .sorted(Comparator.comparing(BestDiscountedProductDto::discountedPrice))
+                .toList();
+    }
 
 }
