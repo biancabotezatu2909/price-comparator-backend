@@ -23,6 +23,4 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
             String store,
             LocalDate date
     );
-
-
 }
