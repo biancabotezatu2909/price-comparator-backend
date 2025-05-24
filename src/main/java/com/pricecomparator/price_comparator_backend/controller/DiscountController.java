@@ -29,7 +29,7 @@ public class DiscountController {
                 .toList();
     }
 
-    @GetMapping("/best")
+   /* @GetMapping("/best")
     public List<DiscountDto> getBest(
             @RequestParam(required = false) String store,
             @RequestParam(required = false) String category,
@@ -40,7 +40,7 @@ public class DiscountController {
                 .map(DiscountMapper::toDto)
                 .toList();
     }
-
+*/
 
     @GetMapping("/new")
     public List<DiscountDto> getNewDiscounts(
@@ -55,13 +55,5 @@ public class DiscountController {
                 .toList();
     }
 
-
-    @GetMapping("/store")
-    public List<DiscountDto> getByStore(@RequestParam String store){
-        return discountService.getByStore(store)
-                .stream()
-                .map(DiscountMapper::toDto)
-                .toList();
-    }
 
 }

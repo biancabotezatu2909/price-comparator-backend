@@ -1,5 +1,6 @@
 package com.pricecomparator.price_comparator_backend.controller;
 
+import com.pricecomparator.price_comparator_backend.dto.BestDiscountedProductDto;
 import com.pricecomparator.price_comparator_backend.dto.PricePointDto;
 import com.pricecomparator.price_comparator_backend.dto.ProductDto;
 import com.pricecomparator.price_comparator_backend.dto.ValuePerUnitDto;
@@ -42,6 +43,18 @@ public class ProductController {
         }
         return products.stream().map(ProductMapper::toDto).toList();
     }
+
+    @GetMapping("/products/best-discounted")
+    public List<BestDiscountedProductDto> getBestDiscountedProducts(
+            @RequestParam(required = false) String productName,
+            @RequestParam(required = false) String brand,
+            @RequestParam(required = false) String category,
+            @RequestParam(required = false) String store
+
+    ) {
+        return productService.getBestDiscountedProducts(store, category, brand, productName);
+    }
+
 
     @GetMapping("/products/{productId}/price-history")
     public List<PricePointDto> getPriceHistory(
