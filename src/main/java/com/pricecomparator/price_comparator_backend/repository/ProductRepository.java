@@ -18,9 +18,14 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     List<Product> findByStoreAndProductId(String store, String productId);
 
+    List<Product> findByProductNameIgnoreCase(String productName);
+
+    List<Product> findByStoreAndProductNameIgnoreCase(String store, String productName);
+
     boolean existsByProductIdAndStoreAndDate(
             String productId,
             String store,
             LocalDate date
     );
+
 }
