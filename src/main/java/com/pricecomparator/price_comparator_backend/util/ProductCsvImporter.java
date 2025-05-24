@@ -18,7 +18,7 @@ import java.util.*;
 public class ProductCsvImporter {
 
     public List<Product> importFromClasspathFolder(String folderPath) {
-        List<Product> allProducts = new ArrayList<>();
+        Map<String, Product> latestProductMap = new HashMap<>();
         PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
 
         try {
@@ -29,13 +29,13 @@ public class ProductCsvImporter {
                 if (filename == null || !filename.endsWith(".csv")) continue;
 
                 String[] parts = filename.replace(".csv", "").split("_");
-                if (parts.length != 2) continue; // skip malformed filenames
+                if (parts.length != 2) continue;
 
                 String store = parts[0];
                 String date = parts[1];
 
-                try (BufferedReader reader = new BufferedReader(new InputStreamReader(
-                        resource.getInputStream(), StandardCharsets.UTF_8))) {
+                try (BufferedReader reader = new BufferedReader(
+                        new InputStreamReader(resource.getInputStream(), StandardCharsets.UTF_8))) {
 
                     log.info("Parsing file: {}", filename);
                     int lineNumber = 1;
@@ -69,7 +69,12 @@ public class ProductCsvImporter {
                                     .date(LocalDate.parse(date))
                                     .build();
 
-                            allProducts.add(product);
+                            String key = product.getProductId() + "|" + product.getStore();
+                            Product existing = latestProductMap.get(key);
+
+                            if (existing == null || product.getDate().isAfter(existing.getDate())) {
+                                latestProductMap.put(key, product);
+                            }
 
                         } catch (NumberFormatException e) {
                             log.warn("Skipped invalid number at line {} in {}: {}", lineNumber, filename, Arrays.toString(fields));
@@ -87,7 +92,8 @@ public class ProductCsvImporter {
             log.error("Failed to read resources from {}", folderPath, e);
         }
 
-        log.info("Imported {} total products from folder '{}'", allProducts.size(), folderPath);
-        return allProducts;
+        List<Product> deduplicated = new ArrayList<>(latestProductMap.values());
+        log.info("Returning {} most recent products from folder '{}'", deduplicated.size(), folderPath);
+        return deduplicated;
     }
 }
