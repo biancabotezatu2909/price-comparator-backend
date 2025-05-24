@@ -1,0 +1,8 @@
+product_id;product_name;brand;package_quantity;package_unit;product_category;from_date;to_date;percentage_of_discount
+P001;lapte zuzu;Zuzu;1.0;l;lactate;2025-05-22;2025-05-28;10
+P008;brânză telemea;Pilos;0.3;kg;lactate;2025-05-22;2025-05-29;12
+P017;piept pui;Lidl;1.0;kg;carne;2025-05-23;2025-05-30;8
+P020;spaghetti nr.5;Barilla;0.5;kg;paste făinoase;2025-05-21;2025-05-27;18
+P034;cafea măcinată;Davidoff;0.25;kg;cafea;2025-05-20;2025-05-27;15
+P037;detergent lichid;Persil;2.5;l;produse de menaj;2025-05-22;2025-05-29;20
+P052;ciocolată neagră 70%;Fin Carre;0.1;kg;gustări;2025-05-22;2025-05-28;16

@@ -2,6 +2,7 @@ package com.pricecomparator.price_comparator_backend.controller;
 
 import com.pricecomparator.price_comparator_backend.dto.PricePointDto;
 import com.pricecomparator.price_comparator_backend.dto.ProductDto;
+import com.pricecomparator.price_comparator_backend.dto.ValuePerUnitDto;
 import com.pricecomparator.price_comparator_backend.mapper.ProductMapper;
 import com.pricecomparator.price_comparator_backend.model.Product;
 import com.pricecomparator.price_comparator_backend.service.ProductService;
@@ -57,5 +58,15 @@ public class ProductController {
     ) {
         return productService.getPriceHistory(productId, store, brand, category, from, to);
     }
+
+    @GetMapping("/products/recommendations")
+    public List<ValuePerUnitDto> getRecommendedProducts(
+            @RequestParam String productName,
+            @RequestParam(required = false) String brand
+    ) {
+        return productService.getRecommendedProducts(productName, brand);
+    }
+
+
 
 }
