@@ -2,7 +2,7 @@
 
 ## Description
 
-This Java backend application is built for the **Accesa Internship 2025 Coding Challenge**. It provides a REST API for comparing grocery prices across major Romanian supermarkets (Lidl, Kaufland, Profi). The system reads CSV files containing product and discount data, maintains a price history, and exposes intelligent endpoints to analyze shopping trends and optimize cost.
+This Java backend application is built for the **Accesa Internship 2025 Coding Challenge**. It provides a REST API for comparing grocery prices across supermarkets. The system reads CSV files containing product and discount data, maintains a price history, and exposes intelligent endpoints to analyze shopping trends and optimize cost.
 
 ---
 
@@ -27,7 +27,6 @@ This Java backend application is built for the **Accesa Internship 2025 Coding C
 - Gradle 8
 - OpenCSV (CSV parsing)
 - Docker + Docker Compose
-- JUnit 5 (Testing)
 - Swagger UI (API documentation)
 
 ---
@@ -42,7 +41,7 @@ This Java backend application is built for the **Accesa Internship 2025 Coding C
 
 ## Running the Application
 
-1. **Build the project** (skip tests during build):
+1. **Build the project**:
 
 ```bash
 ./gradlew clean build -x test
@@ -65,7 +64,7 @@ Visit: [http://localhost:8080/swagger-ui/index.html](http://localhost:8080/swagg
 ### Signup
 
 ```http
-POST /api/auth/signup
+POST /auth/signup
 ```
 Request body:
 ```json
@@ -78,7 +77,7 @@ Request body:
 ### Login
 
 ```http
-POST /api/auth/login
+POST /auth/login
 ```
 Returns a JWT token to be used in all authorized requests.
 
@@ -86,71 +85,53 @@ Returns a JWT token to be used in all authorized requests.
 
 ## API Overview
 
-### Price Alerts
-
-- **Set an alert for a product** by specifying a `targetPrice`.
-- The system checks daily and notifies you if the current price drops below your target.
-- View all your alerts:
-```http
-GET /api/alerts
-```
+### Auth Controller
+- `POST /auth/signup` – Register a new user
+- `POST /auth/login` – Authenticate and receive JWT
 
 ---
 
-### Basket Optimization
-
-Compare:
-- `Worst-case`: buying everything from one store
-- `Best-case`: splitting across stores
-- `Savings`: percentage difference
-
-Endpoint:
-```http
-POST /api/basket/optimize
-```
+### Price Alert Controller
+- `GET /alerts` – View all your active price alerts
+- `POST /alerts` – Set an alert with target price
 
 ---
 
-### Best Discounts
-
-```http
-GET /api/discounts/best?store=lidl&category=lactate
-```
-
-- Shows current top discounts.
-- Optional filters: `store`, `category`, `brand`.
+### Product Controller
+- `GET /products` – List all imported products
+- `GET /products/products/{productId}/price-history` – View price evolution for a product
+- `GET /products/products/recommendations` – Get substitutes for better value/unit
+- `GET /products/products/best-discounted` – Get currently best discounted products
 
 ---
 
-### New Discounts
-
-```http
-GET /api/discounts/new?store=profi
-```
-
-- Discounts introduced in the last 24 hours.
-- Optional filters: `store`, `category`, `brand`.
+### Shopping Basket Controller
+- `POST /shopping-basket/optimize` – Optimize cost across stores vs single store purchase
 
 ---
 
-### Price History Graph
-
-```http
-GET /api/products/{productId}/history
-```
-
-- Returns time-series data for product price evolution.
-- Usable for dynamic graph rendering in the frontend.
+### Discount Controller
+- `GET /discounts` – List all active discounts (supports filtering)
+- `GET /discounts/new` – List newly added discounts in the last 24h (supports filtering)
 
 ---
 
-### Product Substitutes
+### Notification Controller
+- `GET /notifications` – View all received alerts
+- `POST /notifications/{id}/read` – Mark a notification as read
 
-```http
-GET /api/products/{productId}/substitutes
-```
+---
 
-- Returns similar products with better value-per-unit.
+### Admin Controller
+- `DELETE /admin/reset-db` – Reset all stored data (DEV/TEST only)
 
+---
 
+## Additional Notes
 
+- All protected routes require a valid JWT token in the `Authorization` header.
+- CSV file ingestion is handled automatically on container startup or via admin reset if configured.
+- Product substitutions are based on normalized price per unit.
+- Price history returns all values over time per store and is designed for frontend plotting (graph).
+
+---
