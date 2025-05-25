@@ -1,0 +1,4 @@
+product_id;product_name;brand;package_quantity;package_unit;product_category;from_date;to_date;percentage_of_discount
+P1111;ciocolată caramel;Milka;100;g;gustări;2025-05-24;2025-05-31;90
+P5555;ciocolată rea;Milka;100;g;gustări;2025-05-24;2025-05-31;90
+P2222;CEVA;Milka;100;g;gustări;2025-05-24;2025-05-31;90

@@ -1,0 +1,9 @@
+product_id;product_name;product_category;brand;package_quantity;package_unit;price;currency
+P1234;test produs;category;brand;1;kg;10.0;RON
+P052;ciocolată neagră 70%;gustări;Fin Carre;100;g;0.4;RON
+P8888;ciocolată premium 85%;gustări;ChocoLux;100;g;3.50;RON
+P9999;ciocolată albă;gustări;Milka;100;g;10;RON
+P1111;ciocolată caramel;gustări;Milka;100;g;10;RON
+P1112;ciocolatăbuna;gustări;Milka;100;g;10;RON
+P1113;BISCUITI;gustări;Milka;100;g;10;RON
+P5555;ciocolata rea;gustări;Milka;100;g;4.9;RON

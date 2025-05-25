@@ -2,3 +2,5 @@ product_id;product_name;brand;package_quantity;package_unit;product_category;fro
 P002;iaurt grecesc;Lidl;0.4;kg;lactate;2025-05-22;2025-05-28;9
 P031;biscuiți cu unt;Deluxe;0.2;kg;gustări;2025-05-22;2025-05-29;11
 P049;vin alb demisec;Jidvei;0.75;l;băuturi;2025-05-23;2025-05-30;14
+P888;test name2;test brand;1;kg;test category;2025-05-25;2025-05-31;100
+P777;test name3;test brand;1;kg;test category;2025-05-25;2025-05-31;100

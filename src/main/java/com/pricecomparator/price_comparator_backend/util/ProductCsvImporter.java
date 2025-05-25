@@ -1,6 +1,8 @@
 package com.pricecomparator.price_comparator_backend.util;
 
 import com.pricecomparator.price_comparator_backend.model.Product;
+import com.pricecomparator.price_comparator_backend.service.PriceAlertService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
@@ -13,9 +15,12 @@ import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.util.*;
 
+@RequiredArgsConstructor
 @Component
 @Slf4j
 public class ProductCsvImporter {
+
+    private final PriceAlertService alertService;
 
     public List<Product> importFromClasspathFolder(String folderPath) {
         Map<String, Product> latestProductMap = new HashMap<>();
@@ -74,6 +79,9 @@ public class ProductCsvImporter {
 
                             if (existing == null || product.getDate().isAfter(existing.getDate())) {
                                 latestProductMap.put(key, product);
+                                log.info("Checking alerts for imported product {}", product.getProductId());
+
+                                alertService.checkForTriggeredAlerts(product);
                             }
 
                         } catch (NumberFormatException e) {

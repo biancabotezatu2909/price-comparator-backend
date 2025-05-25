@@ -38,4 +38,27 @@ public class DiscountApplierService {
                         !product.getDate().isAfter(d.getToDate()))
                 .max(Comparator.comparingDouble(Discount::getPercentage));
     }
+
+    public Product applyDiscount(Product product, Discount discount) {
+        if (!product.getProductId().equals(discount.getProductId())) return product;
+        if (!product.getStore().equalsIgnoreCase(discount.getStore())) return product;
+
+        double percent = discount.getPercentage();
+        BigDecimal discountedPrice = product.getPrice()
+                .multiply(BigDecimal.valueOf(1 - percent / 100.0));
+
+        return Product.builder()
+                .productId(product.getProductId())
+                .productName(product.getProductName())
+                .productCategory(product.getProductCategory())
+                .brand(product.getBrand())
+                .packageQuantity(product.getPackageQuantity())
+                .packageUnit(product.getPackageUnit())
+                .store(product.getStore())
+                .price(discountedPrice)
+                .currency(product.getCurrency())
+                .date(product.getDate())
+                .build();
+    }
+
 }

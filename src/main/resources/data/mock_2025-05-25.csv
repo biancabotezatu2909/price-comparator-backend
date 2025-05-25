@@ -1,0 +1,6 @@
+product_id;product_name;product_category;brand;package_quantity;package_unit;price;currency
+P1112;ciocolată buna;gustări;Milka;100;g;10;RON
+P5555;ciocolata rea;gustări;Milka;100;g;10;RON
+P2222;CEVA;gustări;Milka;100;g;10;RON
+
+

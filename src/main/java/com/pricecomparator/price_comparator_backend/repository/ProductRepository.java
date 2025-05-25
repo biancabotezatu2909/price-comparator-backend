@@ -28,4 +28,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
             LocalDate date
     );
 
+    List<Product> findAllByProductIdOrderByDateDesc(String productId);
+
+
 }

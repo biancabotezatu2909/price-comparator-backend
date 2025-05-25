@@ -1,10 +1,7 @@
 package com.pricecomparator.price_comparator_backend.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,10 +15,12 @@ import java.util.List;
 public class User {
 
     @Id
+    @Column(name = "email")
     private String email;
 
     private String password;
 
-   // @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-  //  private List<PriceAlert> alerts = new ArrayList<>();
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "user_email") // foreign key stored in price_alerts table
+    private List<PriceAlert> alerts = new ArrayList<>();
 }

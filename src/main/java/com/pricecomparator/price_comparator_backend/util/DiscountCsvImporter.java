@@ -1,6 +1,10 @@
 package com.pricecomparator.price_comparator_backend.util;
 
 import com.pricecomparator.price_comparator_backend.model.Discount;
+import com.pricecomparator.price_comparator_backend.model.Product;
+import com.pricecomparator.price_comparator_backend.repository.ProductRepository;
+import com.pricecomparator.price_comparator_backend.service.DiscountApplierService;
+import com.pricecomparator.price_comparator_backend.service.PriceAlertService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.Resource;
@@ -17,6 +21,10 @@ import java.util.*;
 @Slf4j
 @RequiredArgsConstructor
 public class DiscountCsvImporter {
+
+    private final ProductRepository productRepository;
+    private final PriceAlertService priceAlertService;
+    private final DiscountApplierService discountApplierService;
 
     public List<Discount> importFromClasspathFolder(String folderPath) {
         Map<String, Discount> latestDiscountMap = new HashMap<>();
@@ -73,11 +81,36 @@ public class DiscountCsvImporter {
                                     .date(LocalDate.parse(fileDate))
                                     .build();
 
-                            String key = discount.getProductId() + "|" + discount.getStore() + "|" + discount.getFromDate() + "|" + discount.getToDate();
-                            Discount existing = latestDiscountMap.get(key);
+                            String key = discount.getProductId() + "|" + discount.getStore() + "|" +
+                                    discount.getFromDate() + "|" + discount.getToDate();
 
+                            Discount existing = latestDiscountMap.get(key);
                             if (existing == null || discount.getDate().isAfter(existing.getDate())) {
                                 latestDiscountMap.put(key, discount);
+
+                                // 🔍 Find all recent products across all stores
+                                List<Product> baseProducts = productRepository
+                                        .findAllByProductIdOrderByDateDesc(discount.getProductId());
+
+                                for (Product baseProduct : baseProducts) {
+                                    Product simulatedProduct = Product.builder()
+                                            .productId(baseProduct.getProductId())
+                                            .productName(baseProduct.getProductName())
+                                            .productCategory(baseProduct.getProductCategory())
+                                            .brand(baseProduct.getBrand())
+                                            .packageQuantity(baseProduct.getPackageQuantity())
+                                            .packageUnit(baseProduct.getPackageUnit())
+                                            .store(baseProduct.getStore())
+                                            .price(baseProduct.getPrice())
+                                            .currency(baseProduct.getCurrency())
+                                            .date(discount.getFromDate())
+                                            .build();
+
+                                    // ✅ Apply the discount first before checking alerts
+                                    Product discountedProduct = discountApplierService.applyDiscount(simulatedProduct, discount);
+
+                                    priceAlertService.checkForTriggeredAlerts(discountedProduct);
+                                }
                             }
 
                         } catch (Exception e) {
