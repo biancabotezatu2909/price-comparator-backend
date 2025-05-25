@@ -31,6 +31,8 @@ dependencies {
 	implementation 'org.glassfish:jakarta.el:4.0.2'
 	implementation 'org.postgresql:postgresql:42.7.3'
 
+	implementation 'org.springframework.boot:spring-boot-starter-mail'
+
 
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'io.jsonwebtoken:jjwt-api:0.11.5'

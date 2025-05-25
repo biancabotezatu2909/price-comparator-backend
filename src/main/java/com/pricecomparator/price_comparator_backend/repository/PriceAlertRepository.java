@@ -12,5 +12,6 @@ public interface PriceAlertRepository extends JpaRepository<PriceAlert, Long> {
     List<PriceAlert> findByUserEmail(String email);
     List<PriceAlert> findByUserEmailAndTriggeredFalse(String email);
     List<PriceAlert> findByUser(User user);
+    List<PriceAlert> findByProductIdAndTriggeredFalse(String productId);
 
 }

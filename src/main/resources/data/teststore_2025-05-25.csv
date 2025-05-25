@@ -1,0 +1,6 @@
+product_id;product_name;product_category;brand;package_quantity;package_unit;price;currency
+T9999;test product;test category;TestBrand;1;buc;1.00;RON
+T8888;test;test category;TestBrand;1;buc;10.00;RON
+T7777;test;test category;TestBrand;1;buc;10.00;RON
+T4321;test;test category;TestBrand;1;buc;10.00;RON
+T54321;test;test category;TestBrand;1;buc;10.00;RON

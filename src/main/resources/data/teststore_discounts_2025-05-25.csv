@@ -1,0 +1,7 @@
+product_id;product_name;brand;package_quantity;package_unit;product_category;from_date;to_date;percentage_of_discount
+T9999;test product;TestBrand;1;buc;test category;2025-05-25;2025-05-31;80
+T8888;test;TestBrand;1;buc;test category;2025-05-25;2025-05-31;80
+T7777;test;TestBrand;1;buc;test category;2025-05-25;2025-05-31;80
+T4321;test;TestBrand;1;buc;test category;2025-05-25;2025-05-31;80
+T54321;test;TestBrand;1;buc;test category;2025-05-25;2025-05-31;90
+

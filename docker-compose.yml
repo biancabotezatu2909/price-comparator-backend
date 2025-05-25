@@ -1,4 +1,5 @@
 version: '3.8'
+
 services:
   db:
     image: postgres:16
@@ -11,6 +12,8 @@ services:
       - "5432:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
+    networks:
+      - backend
 
   app:
     build: .
@@ -20,6 +23,12 @@ services:
       - db
     env_file:
       - .env
+    networks:
+      - backend
 
 volumes:
   pgdata:
+
+networks:
+  backend:
+    driver: bridge
