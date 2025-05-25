@@ -22,7 +22,7 @@ public class AuthController {
 
     @PostMapping("/signup")
     public ResponseEntity<?> signup(@RequestBody AuthRequest request) {
-        if (userRepository.existsByUsername(request.email())) {
+        if (userRepository.existsByEmail(request.email())) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body("Username already exists");
         }
 
