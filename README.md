@@ -2,7 +2,7 @@
 
 ## Description
 
-This Java backend application is built for the **Accesa Internship 2025 Coding Challenge**. It provides a REST API for comparing grocery prices across supermarkets. The system reads CSV files containing product and discount data, maintains a price history, and exposes intelligent endpoints to analyze shopping trends and optimize cost.
+This Java backend application provides a REST API for comparing grocery prices across supermarkets. The system reads CSV files containing product and discount data, maintains a price history, and exposes intelligent endpoints to analyze shopping trends and optimize cost.
 
 ---
 
